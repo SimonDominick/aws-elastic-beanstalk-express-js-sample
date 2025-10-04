@@ -43,7 +43,7 @@ pipeline {
           withCredentials([string(credentialsId: 'snyk-api-token', variable: 'SNYK_TOKEN')]) {
             sh '''
                 docker run --rm -u 0:0 -e SNYK_TOKEN="$SNYK_TOKEN" \
-                  -v "$PWD":/app -w /app node:16 bash -lc "
+                  -v "$PWD":/app -w /app node:20-bookworm bash -lc "
                     set -e
                     npm i -g snyk
                     snyk auth \\"$SNYK_TOKEN\\"
