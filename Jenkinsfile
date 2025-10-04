@@ -64,8 +64,21 @@ pipeline {
                 }
             }
         }
+
     }
 
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+
+        always {
+          recordIssues tools: [errorProne()]
+        }
+    }
 }
 
 
