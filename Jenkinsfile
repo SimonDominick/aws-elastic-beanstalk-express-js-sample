@@ -27,6 +27,20 @@ pipeline {
             }
         }
 
+
+        stage('Security Scan') {
+            agent { docker { image 'node:20-bookworm'; args '-u root:root' } }
+            steps {
+                withCredentials([string(credentialsId: 'snyk-api-token', variable: 'SNYK_TOKEN')]) {
+                    sh '''
+                      npm install -g snyk
+                      snyk auth $SNYK_TOKEN
+                      snyk test --severity-threshold=high
+                    '''
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
